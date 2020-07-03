@@ -1,21 +1,27 @@
-//
-//  Home.swift
-//  Landmarks
-//
-//  Created by Misaki Shimazaki on 2020/07/03.
-//  Copyright © 2020 Apple. All rights reserved.
-//
-
 import SwiftUI
 
-struct Home: View {
+struct CategoryHome: View {
+    var categories: [String: [Landmark]] {
+        Dictionary(
+            grouping: landmarkData,
+            by: { $0.category.rawValue }
+        )
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        NavigationView {
+            List {
+                ForEach(categories.keys.sorted(), id: \.self) { key in
+                    CategoryRow(categoryName: key, items: self.categories[key]!)
+                }
+            }
+            .navigationBarTitle(Text("Featured"))
+        }
     }
 }
 
-struct Home_Previews: PreviewProvider {
+struct CategoryHome_Previews: PreviewProvider {
     static var previews: some View {
-        Home()
+        CategoryHome()
     }
 }
